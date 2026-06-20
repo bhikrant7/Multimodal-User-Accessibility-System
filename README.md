@@ -6,7 +6,7 @@
 
 ### 🎥 System Demonstration Video
 <!-- In technical interviews, a visual demo is worth a thousand words. Embed your YouTube demo link below: -->
-[![Sentinel System Demonstration](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Sentinel System Demonstration](https://img.youtube.com/vi/J8nfPClZTAY/maxresdefault.jpg)](https://youtu.be/J8nfPClZTAY?si=xa5_gOT04KLnc8CI)
 *Click the banner above to watch the Sentinel system architecture, real-time hazard avoidance, and Flutter companion app in action.*
 
 ---
