@@ -1,0 +1,61 @@
+import 'package:flutter_tts/flutter_tts.dart';
+
+/// A dedicated TTS service used exclusively by the Sign Language feature.
+///
+/// This is intentionally isolated from [TtsService] and [AudioQueueManager]
+/// so that it can be independently stopped when a danger alert fires without
+/// affecting any other audio pipeline.
+class SignLanguageTtsService {
+  final FlutterTts _tts = FlutterTts();
+  bool _isSpeaking = false;
+
+  Future<void> init() async {
+    await _tts.setLanguage('en-US');
+    await _tts.setSpeechRate(0.45);
+    await _tts.setPitch(1.0);
+
+    _tts.setStartHandler(() {
+      _isSpeaking = true;
+    });
+
+    _tts.setCompletionHandler(() {
+      _isSpeaking = false;
+    });
+
+    _tts.setCancelHandler(() {
+      _isSpeaking = false;
+    });
+
+    _tts.setErrorHandler((_) {
+      _isSpeaking = false;
+    });
+  }
+
+  /// Speak the given [text].
+  ///
+  /// If TTS is already speaking, the current speech is stopped first
+  /// and restarted with the new text.
+  /// If [text] is empty, this is a no-op.
+  Future<void> speak(String text) async {
+    if (text.trim().isEmpty) return;
+
+    // Always stop first to prevent overlapping sessions.
+    await _tts.stop();
+    _isSpeaking = false;
+
+    await _tts.speak(text);
+  }
+
+  /// Immediately stop any in-progress speech.
+  Future<void> stop() async {
+    await _tts.stop();
+    _isSpeaking = false;
+  }
+
+  bool get isSpeaking => _isSpeaking;
+
+  Future<void> dispose() async {
+    await _tts.stop();
+    _isSpeaking = false;
+  }
+}
